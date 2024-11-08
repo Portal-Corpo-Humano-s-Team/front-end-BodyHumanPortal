@@ -12,92 +12,105 @@ const subject = ref('')
 const responseMessage = ref('')
 const emails = ref([])
 
-// Funções de gerenciamento
-const getEmails = async () => {
-  try {
-    // Carregar emails
-    const emailData = await UserManeger.getEmails()
-    emails.value = emailData
-  } catch (error) {
-    console.error('Erro ao carregar emails:', error)
-  }
-}
+import { RedirectManager, UserManeger } from "../utils.js";
+RedirectManager.redirectToLogin();
+// Função para atualizar o e-mail do usuário
+document.getElementById("emailForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-const sendQuestion = async () => {
-  const apiKey = 'SUA_API_KEY_AQUI'
-  const token = localStorage.getItem('token')
-
-  if (!token) {
-    responseMessage.value = 'Erro: Token de autenticação não encontrado.'
-    return
-  }
+  const newEmail = document.getElementById("email").value;
+  const token = localStorage.getItem("token"); // Pega o token de autenticação
 
   try {
-    // Requisição para OpenAI
-    const aiResponse = await fetch(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            { role: 'system', content: 'You are a helpful assistant.' },
-            { role: 'user', content: question.value },
-          ],
-        }),
+    const response = await fetch("http://localhost:3000/update", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    )
+      body: JSON.stringify({ email: newEmail }),
+    });
 
-    if (aiResponse.ok) {
-      const aiData = await aiResponse.json()
-      const gptResponse = aiData.choices[0].message.content
-
-      // Envio do email com resposta do GPT
-      const emailResponse = await fetch(
-        'http://localhost:3000/users/sendHelpEmail',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            question: question.value,
-            subject: subject.value,
-            response: gptResponse,
-          }),
-        },
-      )
-
-      if (emailResponse.ok) {
-        responseMessage.value = 'E-mail enviado com sucesso!'
-        getEmails() // Atualiza a lista de e-mails
-      } else {
-        const errorData = await emailResponse.json()
-        responseMessage.value = 'Erro ao enviar o e-mail: ' + errorData.message
-      }
+    if (response.ok) {
+      alert("E-mail atualizado com sucesso!");
+      localStorage.removeItem("token");
+      RedirectManager.redirectToLogin();
     } else {
-      const aiError = await aiResponse.json()
-      responseMessage.value =
-        'Erro ao se comunicar com a OpenAI: ' + aiError.message
+      const errorData = await response.json();
+      alert("Erro ao atualizar o e-mail: " + errorData.message);
     }
   } catch (error) {
-    responseMessage.value = 'Erro ao enviar dúvida, tente novamente.'
-    console.error(error)
+    console.error("Erro na requisição:", error);
+    alert("Erro ao tentar atualizar o e-mail.");
   }
-}
+});
 
-// Inicialização ao montar o componente
-onMounted(() => {
-  getEmails()
-  if (!localStorage.getItem('token')) {
-    router.push('/login') // Redireciona para login se o token não estiver disponível
+// Função para atualizar a senha do usuário
+document.getElementById("passwordForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const currentPassword = document.getElementById("current-password").value;
+  const newPassword = document.getElementById("new-password").value;
+  const token = localStorage.getItem("token"); // Pega o token de autenticação
+
+  try {
+    const response = await fetch("http://localhost:3000/update", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+
+    if (response.ok) {
+      alert("Senha atualizada com sucesso!");
+      localStorage.removeItem("token");
+      RedirectManager.redirectToLogin();
+    } else {
+      const errorData = await response.json();
+      alert("Erro ao atualizar a senha: " + errorData.message);
+    }
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+    alert("Erro ao tentar atualizar a senha.");
   }
-})
+});
+
+document.getElementById("delete-account").addEventListener("click", async (event) => {
+  event.preventDefault();
+
+  const confirmation = confirm("Você tem certeza que deseja excluir sua conta? Esta ação é irreversível.");
+
+  if (confirmation) {
+    // Se o usuário confirmar, execute a lógica de exclusão
+    // Aqui você pode fazer uma requisição ao servidor para deletar a conta
+    console.log("Conta excluída"); // Apenas um log para o exemplo
+
+    // Exemplo de requisição usando fetch
+    fetch("http://localhost:3000/users", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("Sua conta foi excluída com sucesso.");
+          localStorage.removeItem("token");
+          RedirectManager.redirectToLogin();
+        } else {
+          alert("Houve um problema ao tentar excluir sua conta.");
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao excluir conta:", error);
+        alert("Erro ao excluir conta. Tente novamente.");
+      });
+  } else {
+    // Se o usuário cancelar, apenas saia da função
+    console.log("Exclusão de conta cancelada");
+  }
+});
 </script>
 
 <template>
@@ -108,84 +121,55 @@ onMounted(() => {
       <div class="sidebar">
         <h2>Portal do Corpo Humano</h2>
         <ul>
-          <li><router-link to="/dashboard">Dashboard</router-link></li>
-          <li><router-link to="/suporte">Suporte</router-link></li>
-          <li><router-link to="/seguranca">Segurança</router-link></li>
+          <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
+          <li><RouterLink to="/suporte">Suporte</RouterLink></li>
+          <li><RouterLink to="/seguranca">Segurança</RouterLink></li>
         </ul>
       </div>
 
       <!-- Main Content -->
       <div class="main-content">
+        <!-- Header -->
         <div class="cabecalho">
-          <h1>Suporte</h1>
-          <router-link to="/login">
-            <button id="logout" type="button" @click="UserManeger.logoutUser()">
-              Logout
-            </button>
-          </router-link>
+          <h1>Minha Conta</h1>
+          <button id="logout" type="button" @click="logoutUser">Logout</button>
         </div>
 
-        <!-- Support Form Section -->
-        <div class="support-section">
-          <h3>Envie sua dúvida:</h3>
-          <p>
-            Envie suas dúvidas relacionadas aos temas abordados no Portal do
-            Corpo Humano. Nossa equipe lhe responderá o mais rápido possível.
-          </p>
-
-          <form @submit.prevent="sendQuestion">
-            <label for="subject"><span>Assunto:</span></label>
-            <textarea
-              id="subject"
-              v-model="subject"
-              placeholder="Digite o assunto da sua dúvida..."
-              required
-            ></textarea>
-
-            <label for="question">Descrição da dúvida:</label>
-            <textarea
-              id="question"
-              v-model="question"
-              placeholder="Digite sua dúvida..."
-              required
-            ></textarea>
-
-            <button type="submit">Enviar</button>
+        <!-- Update Email Section -->
+        <div class="account-section">
+          <h3>Atualizar E-mail</h3>
+          <form id="emailForm">
+            <label for="email">Novo E-mail:</label>
+            <input type="email" id="email" placeholder="Digite o novo e-mail..." required />
+            <button type="submit" @click="">Atualizar E-mail</button>
           </form>
-          <p>{{ responseMessage }}</p>
         </div>
 
-        <!-- Sent Emails Section -->
-        <div class="emails-section">
-          <h3>Últimas dúvidas enviadas</h3>
-          <table id="emailsTable">
-            <thead>
-              <tr>
-                <th>Assunto</th>
-                <th>Mensagem</th>
-                <th>Data de Envio</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="email in emails" :key="email.id">
-                <td>{{ email.subject }}</td>
-                <td>{{ email.message }}</td>
-                <td>{{ email.date }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Update Password Section -->
+        <div class="account-section">
+          <h3>Atualizar Senha</h3>
+          <form id="passwordForm">
+            <label for="current-password">Senha Atual:</label>
+            <input type="password" id="current-password" placeholder="Digite sua senha atual..." required />
+            <label for="new-password">Nova Senha:</label>
+            <input type="password" id="new-password" placeholder="Digite sua nova senha..." required />
+            <button type="submit" @click="">Atualizar Senha</button>
+          </form>
+        </div>
+
+        <div class="account-section delete-account-section">
+          <h3>Excluir Conta</h3>
+          <p>Esta ação é irreversível. Você realmente deseja excluir sua conta?</p>
+          <button id="delete-account" type="button" @click="">Excluir sua
+            Conta</button>
         </div>
         <footer>
           <hr />
           <p>
             &copy; 2024 Todos os direitos reservados - Portal do Corpo Humano
           </p>
-          <a href="https://www.instagram.com/portal_corpohumano/"
-            ><span class="fa-brands fa-instagram"></span
-          ></a>
-          <a href="mailto:portalcorpohumano@gmail.com"
-            ><span class="fa-regular fa-envelope"></span
-          ></a>
+          <a href="https://www.instagram.com/portal_corpohumano/"><span class="fa-brands fa-instagram"></span></a>
+          <a href="mailto:portalcorpohumano@gmail.com"><span class="fa-regular fa-envelope"></span></a>
         </footer>
       </div>
     </div>
@@ -194,17 +178,19 @@ onMounted(() => {
 
 <style scoped>
 main {
-  padding: 4vw 0 0 0;
+  padding: 2vw 0 0 0;
 }
 
 .container {
   display: flex;
+  padding: 2vw 0 0 0;
 }
 
 /* Sidebar */
 .sidebar {
   width: 250px;
   background-color: #2c3e50;
+  height: 48.3vw;
   padding: 20px;
   color: #fff;
 }
@@ -375,7 +361,7 @@ button:hover {
 
 footer {
   text-align: center;
-  margin-top: 3vw;
+  margin-top: 2vw;
 }
 
 footer hr {

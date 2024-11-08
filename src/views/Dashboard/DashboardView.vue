@@ -74,7 +74,7 @@ function logoutUser() {
 
         <!-- Links Section -->
         <div class="links">
-          <h2>Links Úteis</h2>
+          <h2>Calcule seu IMC</h2>
           <div>
             <imc />
           </div>
@@ -98,19 +98,19 @@ function logoutUser() {
 
 <style scoped>
 main {
-  padding: 4vw 0 0 0;
+  padding: 2vw 0 0 0;
 }
 
 .container {
   display: flex;
-  padding: 1.3vw 0 0 0;
+  padding: 2vw 0 0 0;
 }
 
 /* Sidebar Styles */
 .sidebar {
   width: 250px;
   background-color: #2c3e50;
-  height: 100vh;
+  height: 46vw;
   padding: 20px;
   color: #fff;
 }
@@ -221,7 +221,7 @@ button:hover {
 
 footer {
   text-align: center;
-  margin-top: 3vw;
+  margin-top: 9vw;
 }
 
 footer hr {

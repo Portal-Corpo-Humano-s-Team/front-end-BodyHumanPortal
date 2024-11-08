@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import Header from '../../geral/Header.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -98,7 +98,7 @@ onMounted(() => {
     router.push('/login') // Redireciona para login se o token não estiver disponível
   }
 })
-</script>
+</script> -->
 
 <template>
   <Header />
@@ -194,24 +194,25 @@ onMounted(() => {
 
 <style scoped>
 main {
-  padding: 4vw 0 0 0;
+  padding: 2vw 0 0 0;
 }
 
 .container {
   display: flex;
+  padding: 2vw 0 0 0;
 }
 
 .sidebar {
   width: 250px;
   background-color: #2c3e50;
+  height: 46vw;
   padding: 20px;
   color: #fff;
 }
 
 .sidebar h2 {
   text-align: center;
-  margin-bottom: 30px;
-  margin-top: 3vw;
+  margin: 3vw 0 30px;
 }
 
 .sidebar ul {
@@ -354,7 +355,7 @@ button:hover {
 
 footer {
   text-align: center;
-  margin-top: 3vw;
+  margin-top: 4vw;
 }
 
 footer hr {
