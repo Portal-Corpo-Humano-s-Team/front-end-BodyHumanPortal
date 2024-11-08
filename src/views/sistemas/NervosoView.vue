@@ -31,7 +31,7 @@ async function fetchSvg() {
           cursor: pointer
         }
         #svg-brain a:hover path {
-          fill: rgba(146,68,80,0.6) !important;
+          fill: black !important;
           transition: fill 0.3s;
         }
       `
@@ -139,9 +139,7 @@ onMounted(fetchSvg)
 
     <section class="image">
       <div id="container">
-        <div id="div-image">
-          <img id="mainImage" :src="image" @load="fetchSvg" />
-        </div>
+        <img id="mainImage" :src="image" @load="fetchSvg" />
         <div id="text">
           <h1 id="nomeOrgao"></h1>
           <p id="descOrgao"></p>
@@ -291,8 +289,8 @@ onMounted(fetchSvg)
   font-size: 1.5rem;
   line-height: 1.5;
   margin: auto 0;
-  margin: 0 0 5vw 12vw;
-  max-width: 40vw;
+  margin: 0 0 5vw 10vw;
+  max-width: 50vw;
 }
 
 #container div h1 {
