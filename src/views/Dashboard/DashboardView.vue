@@ -14,13 +14,16 @@ onMounted(async () => {
   const token = localStorage.getItem('token')
 
   try {
-    const response = await fetch('http://localhost:3000/logged-user', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      'https://back-end-bodyhumanportal.onrender.com/logged-user',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
 
     if (!response.ok)
       throw new Error('Erro na requisição. Status: ' + response.status)
