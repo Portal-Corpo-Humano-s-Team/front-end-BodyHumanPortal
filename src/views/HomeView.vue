@@ -251,20 +251,17 @@ section.image {
   display: flex;
   align-items: center;
   width: 60vw;
+  height: 35vw;
 }
 
 #text {
-  margin: 0 5vw 0 0;
-  width: 25vw;
+  padding: 0 5vw 0 0;
+  width: 28vw;
   line-height: 1.3;
   color: black;
   text-shadow: 1px 1px 1px white;
   font-size: 1.2vw;
   text-align: justify;
-}
-
-#text a {
-  margin: 10px 0 0 0;
 }
 
 #text h1 {
