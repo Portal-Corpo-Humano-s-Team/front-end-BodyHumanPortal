@@ -30,7 +30,7 @@ import ReprodutorMasculinoView from '../views/sistemas/Reprodutor-masculinoView.
 import RespiratorioView from '../views/sistemas/RespiratorioView.vue'
 import UrinarioView from '../views/sistemas/UrinarioView.vue'
 
-// import authToken from '@/middleware/authToken.js'
+import authToken from '@/middleware/authToken.js'
 
 const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
@@ -44,19 +44,19 @@ const router = createRouter({
       path: '/dashboard',
       name: 'minhaConta',
       component: DashboardView,
-     // beforeEnter: authToken,
+      beforeEnter: authToken,
     }, // Protegida
     {
       path: '/seguranca',
       name: 'seguranca',
       component: SegurancaView,
-     // beforeEnter: authToken,
+      beforeEnter: authToken,
     },
     {
       path: '/suporte',
       name: 'suporte',
       component: SuporteView,
-     // beforeEnter: authToken,
+      beforeEnter: authToken,
     },
     { path: '/cadastro', name: 'cadastro', component: CadastroView },
     { path: '/login', name: 'login', component: LoginView },

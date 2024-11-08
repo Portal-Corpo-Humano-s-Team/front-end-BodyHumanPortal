@@ -1,5 +1,5 @@
-<script setup>
-import Header from '../../geral/Header.vue'
+<!--<script setup>
+import Header from '../../geral/Header.vue' 
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { DateFormatter } from '/src/assets/utils.js' // Confirme o caminho correto
@@ -12,7 +12,7 @@ const subject = ref('')
 const responseMessage = ref('')
 const emails = ref([])
 
-import { RedirectManager, UserManeger } from "../utils.js";
+// import { RedirectManager, UserManeger } from "../utils.js";
 RedirectManager.redirectToLogin();
 // Função para atualizar o e-mail do usuário
 document.getElementById("emailForm").addEventListener("submit", async (event) => {
@@ -111,7 +111,7 @@ document.getElementById("delete-account").addEventListener("click", async (event
     console.log("Exclusão de conta cancelada");
   }
 });
-</script>
+</script> -->
 
 <template>
   <Header />
