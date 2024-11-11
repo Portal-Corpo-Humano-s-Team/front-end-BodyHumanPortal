@@ -1,38 +1,32 @@
 <script setup>
 import Header from '../../geral/Header.vue'
+import Footer from '@/geral/Footer.vue'
 import imc from '../Calculadora/IMCView.vue'
+import { get } from '@/utils/fetch.js'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-const nameElement = ref('')
-const birthdayElement = ref('')
-const emailElement = ref('')
-const errorMessage = ref('')
 const router = useRouter()
 
+// Definindo as referências reativas para os dados do usuário
+const userData = ref(null)
+const userName = ref('')
+const userBirthday = ref('')
+const userEmail = ref('')
+const errorMessage = ref('')
+
 onMounted(async () => {
-  const token = localStorage.getItem('token')
-
   try {
-    const response = await fetch(
-      'https://back-end-bodyhumanportal.onrender.com/logged-user',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      },
-    )
+    // Chamando a função `get` com await para aguardar a resposta
+    const data = await get('logged-user', { isAuthenticated: true })
 
-    if (!response.ok)
-      throw new Error('Erro na requisição. Status: ' + response.status)
-
-    const data = await response.json()
-    nameElement.value = data.name
-    birthdayElement.value = new Date(data.birthday).toLocaleDateString('pt-BR')
-    emailElement.value = data.email
+    // Populando os dados do usuário
+    userData.value = data
+    userName.value = data.name
+    userBirthday.value = new Date(data.birthday).toLocaleDateString('pt-BR')
+    userEmail.value = data.email
   } catch (error) {
+    // Exibindo mensagem de erro
     errorMessage.value = error.message
   }
 })
@@ -60,19 +54,21 @@ function logoutUser() {
       <!-- Main Content -->
       <div class="main-content">
         <div class="cabecalho">
-          <h1 id="welcome">Bem-vindo, {{ nameElement.split(' ')[0] }}</h1>
+          <h1 id="welcome">Bem-vindo, {{ userName }}</h1>
           <button id="logout" type="button" @click="logoutUser">Logout</button>
         </div>
 
         <!-- Account Details Section -->
         <div class="dashboard">
           <h1>Detalhes da Conta</h1>
-          <div class="user-info">
-            <p>Nome: {{ nameElement }}</p>
-            <p>Data de Nascimento: {{ birthdayElement }}</p>
-            <p>Email: {{ emailElement }}</p>
+          <div class="user-info" v-if="userData">
+            <p>Nome: {{ userName }}</p>
+            <p>Data de Nascimento: {{ userBirthday }}</p>
+            <p>Email: {{ userEmail }}</p>
           </div>
-          <div id="error-message" class="error">{{ errorMessage }}</div>
+          <div v-else id="error-message" class="error">
+            {{ errorMessage }}
+          </div>
         </div>
 
         <!-- Links Section -->
@@ -87,12 +83,12 @@ function logoutUser() {
           <p>
             &copy; 2024 Todos os direitos reservados - Portal do Corpo Humano
           </p>
-          <a href="https://www.instagram.com/portal_corpohumano/"
-            ><span class="fa-brands fa-instagram"></span
-          ></a>
-          <a href="mailto:portalcorpohumano@gmail.com"
-            ><span class="fa-regular fa-envelope"></span
-          ></a>
+          <a href="https://www.instagram.com/portal_corpohumano/">
+            <span class="fa-brands fa-instagram"></span>
+          </a>
+          <a href="mailto:portalcorpohumano@gmail.com">
+            <span class="fa-regular fa-envelope"></span>
+          </a>
         </footer>
       </div>
     </div>

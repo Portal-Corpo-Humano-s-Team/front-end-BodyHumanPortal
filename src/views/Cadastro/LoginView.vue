@@ -54,18 +54,42 @@ async function login(event) {
   <main>
     <form id="userLogin" @submit="login">
       <div class="principal">
-        <h1>Login</h1> <!--título-->
-        <p> <!--email-->
-          <input type="email" v-model="userLogin.email" name="email" id="email" required placeholder="e-mail">
+        <h1>Login</h1>
+        <!--título-->
+        <p>
+          <!--email-->
+          <input
+            type="email"
+            v-model="userLogin.email"
+            name="email"
+            id="email"
+            required
+            placeholder="e-mail"
+          />
           <label for="email"><i class="fa-solid fa-user"></i></label>
-        </p> <!--end email-->
-        <p> <!--password-->
-          <input type="password" v-model="userLogin.password" name="password" id="password" required
-            placeholder="senha">
+        </p>
+        <!--end email-->
+        <p>
+          <!--password-->
+          <input
+            type="password"
+            v-model="userLogin.password"
+            name="password"
+            id="password"
+            required
+            placeholder="senha"
+          />
           <label for="password"><i class="fa-solid fa-lock"></i></label>
-        </p> <!--end password-->
+        </p>
+        <!--end password-->
         <button type="submit">Login</button>
-        <p>Não tem uma conta? <RouterLink to="/cadastro" style="text-decoration: none; color: #010A5C;">Registre-se</RouterLink>
+        <p>
+          Não tem uma conta?
+          <RouterLink
+            to="/cadastro"
+            style="text-decoration: none; color: #010a5c"
+            >Registre-se</RouterLink
+          >
         </p>
       </div>
     </form>
@@ -75,7 +99,7 @@ async function login(event) {
 
 <style scoped>
 main {
-  background-color: #010A5C;
+  background-color: #010a5c;
   margin: 0;
   padding: 0;
   display: flex;
@@ -107,7 +131,7 @@ button {
   /* Aumentei a largura do botão */
   height: 40px;
   /* Mantive a altura */
-  background-color: #010A5C;
+  background-color: #010a5c;
   border: solid #000e91 1px;
   border-radius: 20px;
   font-size: 15px;
@@ -121,8 +145,8 @@ button:hover {
   background-color: #020528;
 }
 
-input[type="email"],
-input[type="password"] {
+input[type='email'],
+input[type='password'] {
   width: 80%;
   /* Ajustei a largura dos inputs para caberem na nova caixa */
   padding: 12px;

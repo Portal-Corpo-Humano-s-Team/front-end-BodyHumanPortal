@@ -1,4 +1,4 @@
-<!-- <script setup>
+<script setup>
 import Header from '../../geral/Header.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -19,12 +19,13 @@ const getEmails = async () => {
     const emailData = await UserManeger.getEmails()
     emails.value = emailData
   } catch (error) {
-    console.error('Erro ao carregar emails:', error)
+    console.error('Erro ao carregar emails:', error) // Correção de erro de digitação com console.error
   }
 }
 
 const sendQuestion = async () => {
-  const apiKey = 'SUA_API_KEY_AQUI'
+  const apiKey =
+    'sk-ztoy7WK0Yxu97qC9rXivxIh0vtd_WfuG3HxCZ7eyc9T3BlbkFJ9SY5pgTl7tZTkzih66d2a5YTVGAINSO8UFBNZsD70A'
   const token = localStorage.getItem('token')
 
   if (!token) {
@@ -46,7 +47,7 @@ const sendQuestion = async () => {
           model: 'gpt-4o-mini',
           messages: [
             { role: 'system', content: 'You are a helpful assistant.' },
-            { role: 'user', content: question.value },
+            { role: 'user', content: question },
           ],
         }),
       },
@@ -74,7 +75,7 @@ const sendQuestion = async () => {
       )
 
       if (emailResponse.ok) {
-        responseMessage.value = 'E-mail enviado com sucesso!'
+        alert('Email enviado com sucesso?')
         getEmails() // Atualiza a lista de e-mails
       } else {
         const errorData = await emailResponse.json()
@@ -98,8 +99,7 @@ onMounted(() => {
     router.push('/login') // Redireciona para login se o token não estiver disponível
   }
 })
-</script> -->
-
+</script>
 <template>
   <Header />
   <main>
@@ -162,14 +162,12 @@ onMounted(() => {
             <thead>
               <tr>
                 <th>Assunto</th>
-                <th>Mensagem</th>
                 <th>Data de Envio</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="email in emails" :key="email.id">
                 <td>{{ email.subject }}</td>
-                <td>{{ email.message }}</td>
                 <td>{{ email.date }}</td>
               </tr>
             </tbody>

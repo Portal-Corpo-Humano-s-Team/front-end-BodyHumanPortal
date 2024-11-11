@@ -1,5 +1,5 @@
-<!--<script setup>
-import Header from '../../geral/Header.vue' 
+<script setup>
+import Header from '../../geral/Header.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { DateFormatter } from '/src/assets/utils.js' // Confirme o caminho correto
@@ -12,106 +12,111 @@ const subject = ref('')
 const responseMessage = ref('')
 const emails = ref([])
 
-// import { RedirectManager, UserManeger } from "../utils.js";
-RedirectManager.redirectToLogin();
+// import { RedirectManager, UserManeger } from
 // Função para atualizar o e-mail do usuário
-document.getElementById("emailForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
+document.getElementById('emailForm').addEventListener('submit', async event => {
+  event.preventDefault()
 
-  const newEmail = document.getElementById("email").value;
-  const token = localStorage.getItem("token"); // Pega o token de autenticação
+  const newEmail = document.getElementById('email').value
+  const token = localStorage.getItem('token') // Pega o token de autenticação
 
   try {
-    const response = await fetch("http://localhost:3000/update", {
-      method: "PATCH",
+    const response = await fetch('http://localhost:3000/update', {
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ email: newEmail }),
-    });
+    })
 
     if (response.ok) {
-      alert("E-mail atualizado com sucesso!");
-      localStorage.removeItem("token");
-      RedirectManager.redirectToLogin();
+      alert('E-mail atualizado com sucesso!')
+      localStorage.removeItem('token')
     } else {
-      const errorData = await response.json();
-      alert("Erro ao atualizar o e-mail: " + errorData.message);
+      const errorData = await response.json()
+      alert('Erro ao atualizar o e-mail: ' + errorData.message)
     }
   } catch (error) {
-    console.error("Erro na requisição:", error);
-    alert("Erro ao tentar atualizar o e-mail.");
+    console.error('Erro na requisição:', error)
+    alert('Erro ao tentar atualizar o e-mail.')
   }
-});
+})
 
 // Função para atualizar a senha do usuário
-document.getElementById("passwordForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
+document
+  .getElementById('passwordForm')
+  .addEventListener('submit', async event => {
+    event.preventDefault()
 
-  const currentPassword = document.getElementById("current-password").value;
-  const newPassword = document.getElementById("new-password").value;
-  const token = localStorage.getItem("token"); // Pega o token de autenticação
+    const currentPassword = document.getElementById('current-password').value
+    const newPassword = document.getElementById('new-password').value
+    const token = localStorage.getItem('token') // Pega o token de autenticação
 
-  try {
-    const response = await fetch("http://localhost:3000/update", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ currentPassword, newPassword }),
-    });
-
-    if (response.ok) {
-      alert("Senha atualizada com sucesso!");
-      localStorage.removeItem("token");
-      RedirectManager.redirectToLogin();
-    } else {
-      const errorData = await response.json();
-      alert("Erro ao atualizar a senha: " + errorData.message);
-    }
-  } catch (error) {
-    console.error("Erro na requisição:", error);
-    alert("Erro ao tentar atualizar a senha.");
-  }
-});
-
-document.getElementById("delete-account").addEventListener("click", async (event) => {
-  event.preventDefault();
-
-  const confirmation = confirm("Você tem certeza que deseja excluir sua conta? Esta ação é irreversível.");
-
-  if (confirmation) {
-    // Se o usuário confirmar, execute a lógica de exclusão
-    // Aqui você pode fazer uma requisição ao servidor para deletar a conta
-    console.log("Conta excluída"); // Apenas um log para o exemplo
-
-    // Exemplo de requisição usando fetch
-    fetch("http://localhost:3000/users", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          alert("Sua conta foi excluída com sucesso.");
-          localStorage.removeItem("token");
-          RedirectManager.redirectToLogin();
-        } else {
-          alert("Houve um problema ao tentar excluir sua conta.");
-        }
+    try {
+      const response = await fetch('http://localhost:3000/update', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
       })
-      .catch((error) => {
-        console.error("Erro ao excluir conta:", error);
-        alert("Erro ao excluir conta. Tente novamente.");
-      });
-  } else {
-    // Se o usuário cancelar, apenas saia da função
-    console.log("Exclusão de conta cancelada");
-  }
-});
-</script> -->
+
+      if (response.ok) {
+        alert('Senha atualizada com sucesso!')
+        localStorage.removeItem('token')
+        RedirectManager.redirectToLogin()
+      } else {
+        const errorData = await response.json()
+        alert('Erro ao atualizar a senha: ' + errorData.message)
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error)
+      alert('Erro ao tentar atualizar a senha.')
+    }
+  })
+
+document
+  .getElementById('delete-account')
+  .addEventListener('click', async event => {
+    event.preventDefault()
+
+    const confirmation = confirm(
+      'Você tem certeza que deseja excluir sua conta? Esta ação é irreversível.',
+    )
+
+    if (confirmation) {
+      // Se o usuário confirmar, execute a lógica de exclusão
+      // Aqui você pode fazer uma requisição ao servidor para deletar a conta
+      console.log('Conta excluída') // Apenas um log para o exemplo
+
+      // Exemplo de requisição usando fetch
+      fetch('http://localhost:3000/users', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if (response.ok) {
+            alert('Sua conta foi excluída com sucesso.')
+            localStorage.removeItem('token')
+            RedirectManager.redirectToLogin()
+          } else {
+            alert('Houve um problema ao tentar excluir sua conta.')
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao excluir conta:', error)
+          alert('Erro ao excluir conta. Tente novamente.')
+        })
+    } else {
+      // Se o usuário cancelar, apenas saia da função
+      console.log('Exclusão de conta cancelada')
+    }
+  })
+</script>
+-->
 
 <template>
   <Header />
@@ -140,7 +145,12 @@ document.getElementById("delete-account").addEventListener("click", async (event
           <h3>Atualizar E-mail</h3>
           <form id="emailForm">
             <label for="email">Novo E-mail:</label>
-            <input type="email" id="email" placeholder="Digite o novo e-mail..." required />
+            <input
+              type="email"
+              id="email"
+              placeholder="Digite o novo e-mail..."
+              required
+            />
             <button type="submit" @click="">Atualizar E-mail</button>
           </form>
         </div>
@@ -150,26 +160,43 @@ document.getElementById("delete-account").addEventListener("click", async (event
           <h3>Atualizar Senha</h3>
           <form id="passwordForm">
             <label for="current-password">Senha Atual:</label>
-            <input type="password" id="current-password" placeholder="Digite sua senha atual..." required />
+            <input
+              type="password"
+              id="current-password"
+              placeholder="Digite sua senha atual..."
+              required
+            />
             <label for="new-password">Nova Senha:</label>
-            <input type="password" id="new-password" placeholder="Digite sua nova senha..." required />
+            <input
+              type="password"
+              id="new-password"
+              placeholder="Digite sua nova senha..."
+              required
+            />
             <button type="submit" @click="">Atualizar Senha</button>
           </form>
         </div>
 
         <div class="account-section delete-account-section">
           <h3>Excluir Conta</h3>
-          <p>Esta ação é irreversível. Você realmente deseja excluir sua conta?</p>
-          <button id="delete-account" type="button" @click="">Excluir sua
-            Conta</button>
+          <p>
+            Esta ação é irreversível. Você realmente deseja excluir sua conta?
+          </p>
+          <button id="delete-account" type="button" @click="">
+            Excluir sua Conta
+          </button>
         </div>
         <footer>
           <hr />
           <p>
             &copy; 2024 Todos os direitos reservados - Portal do Corpo Humano
           </p>
-          <a href="https://www.instagram.com/portal_corpohumano/"><span class="fa-brands fa-instagram"></span></a>
-          <a href="mailto:portalcorpohumano@gmail.com"><span class="fa-regular fa-envelope"></span></a>
+          <a href="https://www.instagram.com/portal_corpohumano/"
+            ><span class="fa-brands fa-instagram"></span
+          ></a>
+          <a href="mailto:portalcorpohumano@gmail.com"
+            ><span class="fa-regular fa-envelope"></span
+          ></a>
         </footer>
       </div>
     </div>
