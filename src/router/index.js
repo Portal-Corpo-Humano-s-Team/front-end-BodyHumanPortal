@@ -22,7 +22,7 @@ import UrinaryView from '@/views/systems/UrinaryView.vue'
 import DashboardView from '@/views/profile/DashboardView.vue'
 import SegurityView from '@/views/profile/SegurityView.vue'
 import SuportView from '@/views/profile/SuportView.vue'
-
+import PageLoginSignUpView from '@/views/profile/PageLoginSignUpView.vue'
 // AUTH
 import authRoutes from './authRoutes'
 
@@ -41,6 +41,10 @@ const routes = [
         path: '/contato',
         name: 'contact',
         component: ContactView,
+      },
+      {
+        path: 'entrar-Conta',
+        component: PageLoginSignUpView,
       },
       {
         path: '/sistema/',

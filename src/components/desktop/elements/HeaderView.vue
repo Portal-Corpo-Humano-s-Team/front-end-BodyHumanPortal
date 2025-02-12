@@ -13,9 +13,6 @@ const token = ref(!true)
         </li>
 
         <li>
-          <RouterLink to="/sobre">SOBRE</RouterLink>
-        </li>
-        <li>
           <RouterLink to="/contato">CONTATO</RouterLink>
         </li>
         <li>
