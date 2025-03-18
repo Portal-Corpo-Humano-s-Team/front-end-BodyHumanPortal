@@ -48,16 +48,33 @@ const handleLocalLogin = async () => {
 
       <div class="inputs">
         <label :class="{ active: focusedEmail || user.email }" for="email">Email</label>
-        <input type="email" name="email" id="email" v-model="user.email" @focus="focusedEmail = true"
-          @blur="checkInputEmail" required />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          v-model="user.email"
+          @focus="focusedEmail = true"
+          @blur="checkInputEmail"
+          required
+        />
         <span class="fa-solid fa-envelope"></span>
       </div>
 
       <div class="inputs">
         <label :class="{ active: focusedPassword || user.password }" for="password">Senha</label>
-        <input :type="showPassword.new ? 'text' : 'password'" name="password" id="password" v-model="user.password"
-          @focus="focusedPassword = true" @blur="checkInputPassword" required />
-        <span :class="showPassword.new ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" @click="togglePassword('new')"></span>
+        <input
+          :type="showPassword.new ? 'text' : 'password'"
+          name="password"
+          id="password"
+          v-model="user.password"
+          @focus="focusedPassword = true"
+          @blur="checkInputPassword"
+          required
+        />
+        <span
+          :class="showPassword.new ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+          @click="togglePassword('new')"
+        ></span>
       </div>
 
       <p>
@@ -69,8 +86,7 @@ const handleLocalLogin = async () => {
       <p><span>ou</span></p>
       <GoogleLoginBtn />
 
-      <p>Não tem uma conta? <RouterLink to="/auth/cadastre-se">Cadastre-se</RouterLink>
-      </p>
+      <p>Não tem uma conta? <RouterLink to="/auth/cadastre-se">Cadastre-se</RouterLink></p>
     </div>
   </section>
 </template>
@@ -140,7 +156,7 @@ section {
         left: 0;
       }
 
-     span {
+      span {
         color: #1663a3;
         font-size: 2vw;
         cursor: pointer;
@@ -172,7 +188,7 @@ section {
       font-weight: 400;
       font-size: 2vw;
       color: #10293d;
-      margin: 2vw 0 0 -27vw;
+      margin: 8vw 0 0 -27vw;
       text-align: left;
       text-decoration: none;
     }
